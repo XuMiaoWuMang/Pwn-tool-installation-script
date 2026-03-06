@@ -156,6 +156,7 @@ fi
 # 4. 安装 Pwngdb
 echo '=== 安装 Pwngdb ==='
 if [ ! -d ~/Pwngdb ]; then
+  cd ~/
   git clone https://github.com/scwuaptx/Pwngdb
 else
   echo "Pwngdb 目录已存在，跳过安装"
