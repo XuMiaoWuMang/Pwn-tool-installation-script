@@ -129,7 +129,7 @@ echo '=== 更新软件源 ==='
 sudo apt update -y
 
 echo '=== 安装基础开发工具 ==='
-sudo apt install -y vim gcc git python3-pip ruby ruby-dev build-essential libssl-dev cmake wabt curl libseccomp-dev libseccomp2 seccomp net-tools gcc-multilib g++-multilib
+sudo apt install -y vim gcc git python3-pip ruby ruby-dev build-essential libssl-dev cmake wabt curl libseccomp-dev libseccomp2 seccomp net-tools gcc-multilib g++-multilib gdb
 
 # 2. 配置 Python 环境
 echo '=== 配置 Python 环境 ==='
