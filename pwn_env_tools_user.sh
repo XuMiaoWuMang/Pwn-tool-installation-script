@@ -199,6 +199,24 @@ fi
 echo '=== 安装 Ruby 工具 ==='
 sudo gem install one_gadget seccomp-tools
 
+# 安装 Awdp 比赛所需工具（需要sudo）
+
+echo '=== 安装 evilPatcher 工具 ==='
+if [ ! -d ~/evilPatcher ]; then
+  cd ~
+  git clone https://github.com/TTY-flag/evilPatcher.git
+else
+  echo "evilPatcher 目录已存在，跳过安装"
+fi
+
+echo '=== 安装 AwdPwnPatcher 工具 ==='
+if [ ! -d ~/AwdPwnPatcher ]; then
+  cd ~
+  git clone https://github.com/aftern00n/AwdPwnPatcher.git
+else
+  echo "AwdPwnPatcher 目录已存在，跳过安装"
+fi
+
 # 继续安装其他工具
 echo '=== 安装 glibc-all-in-one ==='
 if [ ! -d ~/glibc-all-in-one ]; then

@@ -1,25 +1,23 @@
-# Pwn-tool-installation-script README文档
+# Pwn-tool-installation-script
 
-## 1. 脚本概述
+## 项目简介
 
-### 1.1 主要功能与用途
-Pwn-tool-installation-script是一套用于自动化搭建Pwn环境的脚本工具，主要功能包括：
-- 系统软件源配置与优化
-- Docker安装与配置
-- 多种Pwn工具的自动化安装
-- GDB调试环境配置
-- 32位架构支持启用
+Pwn-tool-installation-script 是一套用于自动化搭建 Pwn 环境的脚本工具，以普通用户身份运行，仅在需要时使用 sudo 提升权限。脚本会自动完成系统软件源配置、Docker 安装以及多种 Pwn 工具的安装。
 
-### 1.2 适用操作系统环境
-- Ubuntu系统（推荐Ubuntu 20.04及以上版本）
-- 基于Debian的Linux发行版
+## 适用环境
 
-### 1.3 前置依赖要求
-- 需要具备sudo权限
-- 系统已安装curl工具
+- Ubuntu 系统（推荐 Ubuntu 20.04 及以上版本）
+- 基于 Debian 的 Linux 发行版
+
+## 前置要求
+
+- 需要具备 sudo 权限
+- 系统已安装 curl 工具
 - 稳定的网络连接
 
-## 2. 目录结构
+> **注意**：脚本会先执行 apt 换源，然后安装 docker，最后安装 pwn 工具（大部分都是 GitHub 上的项目），如果你代理的规则不够健全，可能导致换源后执行 apt upgrade 失败。
+
+## 目录结构
 
 ```
 Pwn-tool-installation-script/
@@ -27,165 +25,194 @@ Pwn-tool-installation-script/
 └── docker.sh              # 系统配置与Docker安装脚本
 ```
 
-## 3. 详细使用方法
+## 快速开始
 
-### 3.1 基础安装步骤
+### 克隆仓库
 
-#### 3.1.1 克隆仓库
 ```bash
 git clone https://github.com/XuMiaoWuMang/Pwn-tool-installation-script.git
 cd Pwn-tool-installation-script
 ```
 
-#### 3.1.2 运行主安装脚本
+### 执行安装
+
 ```bash
 bash pwn_env_tools_user.sh
 ```
 
 这将执行完整的安装流程，包括：
 - 系统软件源配置
-- Docker安装
-- 所有Pwn工具安装
-- GDB环境配置
+- Docker 安装
+- 所有 Pwn 工具安装
+- GDB 环境配置
 
-### 3.2 高级配置选项
-
-脚本支持多种命令行参数，用于自定义安装过程：
+## 命令行参数
 
 | 参数 | 说明 |
 |------|------|
 | `--skip-source` | 跳过系统软件源配置 |
-| `--skip-docker` | 跳过Docker安装 |
+| `--skip-docker` | 跳过 Docker 安装 |
 | `--source-url <url>` | 指定系统软件源地址 |
-| `--docker-source-url <url>` | 指定Docker CE软件源地址 |
-| `--docker-registry-url <url>` | 指定Docker镜像仓库地址 |
+| `--docker-source-url <url>` | 指定 Docker CE 软件源地址 |
+| `--docker-registry-url <url>` | 指定 Docker 镜像仓库地址 |
 | `--help` 或 `-h` | 显示帮助信息 |
 
-### 3.3 自定义安装参数说明
+## 使用示例
 
-#### 3.3.1 跳过特定步骤
-```bash
-# 跳过系统软件源配置，只安装Docker和工具
-bash pwn_env_tools_user.sh --skip-source
+### 完整安装
 
-# 跳过Docker安装，只进行系统换源和工具安装
-bash pwn_env_tools_user.sh --skip-docker
-
-# 只安装工具，跳过系统换源和Docker
-bash pwn_env_tools_user.sh --skip-source --skip-docker
-```
-
-#### 3.3.2 使用自定义软件源
-```bash
-# 使用指定的系统软件源
-bash pwn_env_tools_user.sh --source-url mirrors.ustc.edu.cn
-
-# 使用指定的Docker源
-bash pwn_env_tools_user.sh --docker-source-url mirrors.ustc.edu.cn/docker-ce --docker-registry-url registry.docker-cn.com
-```
-
-## 4. 使用示例
-
-### 4.1 完整安装
 ```bash
 bash pwn_env_tools_user.sh
 ```
 
-### 4.2 仅安装工具（跳过系统配置）
+### 跳过特定步骤
+
 ```bash
+# 跳过系统软件源配置，只安装 Docker 和工具
+bash pwn_env_tools_user.sh --skip-source
+
+# 跳过 Docker 安装，只进行系统换源和工具安装
+bash pwn_env_tools_user.sh --skip-docker
+
+# 只安装工具，跳过系统换源和 Docker
 bash pwn_env_tools_user.sh --skip-source --skip-docker
 ```
 
-### 4.3 使用自定义软件源
+### 使用自定义软件源
+
 ```bash
-bash pwn_env_tools_user.sh --source-url mirrors.ustc.edu.cn --docker-registry-url registry.docker-cn.com
+# 使用指定的系统软件源
+bash pwn_env_tools_user.sh --source-url mirrors.ustc.edu.cn
+
+# 使用指定的 Docker 源
+bash pwn_env_tools_user.sh --docker-source-url mirrors.ustc.edu.cn/docker-ce --docker-registry-url registry.docker-cn.com
 ```
 
-### 4.4 验证安装结果
-安装完成后，可以通过以下方式验证环境：
-```bash
-# 验证GDB插件
+### 验证安装结果
 
+```bash
+# 验证 GDB 插件
 gdb
 
-# 验证pwntools
+# 验证 pwntools
 python3 -c "import pwn; print(pwn.version)"
 
-# 验证one_gadget
+# 验证 one_gadget
 one_gadget --version
 ```
 
-## 5. 安装的工具列表
+## 安装的工具列表
 
-### 5.1 调试工具
-- **Pwndbg**：增强型GDB插件，提供丰富的Pwn调试功能
-- **Pwngdb**：GDB插件，增强堆调试能力
-- **one_gadget**：快速查找glibc中的one gadget
-- **seccomp-tools**：seccomp过滤器分析工具
+### 调试工具
 
-### 5.2 开发工具
-- **pwntools**：Python库，用于编写exploit
-- **LibcSearcher**：Libc版本查找工具
-- **glibc-all-in-one**：多种glibc版本集合
-- **patchelf**：修改ELF文件的工具
-- **free-libc**：自由获取glibc的工具
+| 工具 | 说明 |
+|------|------|
+| **Pwndbg** | 增强型 GDB 插件，提供丰富的 Pwn 调试功能 |
+| **Pwngdb** | GDB 插件，增强堆调试能力 |
+| **one_gadget** | 快速查找 glibc 中的 one gadget |
+| **seccomp-tools** | seccomp 过滤器分析工具 |
 
-### 5.3 WebAssembly工具
-- **wabt**：WebAssembly二进制工具包
-- **Wasmtime**：WebAssembly运行时
+### 开发工具
 
-## 6. 常见问题解决方法
+| 工具 | 说明 |
+|------|------|
+| **pwntools** | Python 库，用于编写 exploit |
+| **LibcSearcher** | Libc 版本查找工具 |
+| **glibc-all-in-one** | 多种 glibc 版本集合 |
+| **patchelf** | 修改 ELF 文件的工具 |
+| **free-libc** | 自由获取 glibc 的工具 |
 
-### 6.1 SSH私钥权限问题
+### AWD 比赛工具
+
+| 工具 | 说明 |
+|------|------|
+| **evilPatcher** | AWD 比赛补丁工具 |
+| **AwdPwnPatcher** | AWD 比赛 PWN 补丁工具 |
+
+### WebAssembly 工具
+
+| 工具 | 说明 |
+|------|------|
+| **wabt** | WebAssembly 二进制工具包 |
+| **Wasmtime** | WebAssembly 运行时 |
+
+### 基础开发工具
+
+脚本还会安装以下基础开发工具：
+- vim, gcc, git
+- python3-pip
+- ruby, ruby-dev
+- build-essential, libssl-dev, cmake
+- curl, net-tools
+- libseccomp-dev, libseccomp2, seccomp
+- gcc-multilib, g++-multilib
+- gdb
+
+## 脚本工作流程
+
+1. **参数解析**：读取命令行参数，设置安装选项
+2. **系统配置**：调用 docker.sh 脚本处理系统软件源和 Docker 安装
+3. **基础工具安装**：安装开发所需的基础软件包
+4. **Python 环境配置**：处理 Python 3.12+ 的 EXTERNALLY-MANAGED 限制
+5. **Pwndbg 安装**：克隆并安装 Pwndbg 调试插件
+6. **Pwngdb 安装**：克隆 Pwngdb 插件
+7. **GDB 配置**：生成 .gdbinit 文件，配置调试环境
+8. **Pwn 工具安装**：安装 pwntools、LibcSearcher、one_gadget、seccomp-tools 等工具
+9. **AWD 工具安装**：安装 evilPatcher、AwdPwnPatcher
+10. **glibc 工具安装**：安装 glibc-all-in-one、patchelf、free-libc
+11. **WebAssembly 工具安装**：安装 wabt、Wasmtime
+12. **架构支持**：启用 i386 架构支持
+
+## 常见问题
+
+### SSH 私钥权限问题
+
 **问题**：`Permissions 0664 for '/home/pwn/.ssh/github' are too open.`
-**解决方案**：修改私钥文件权限
+
+**解决方案**：
 ```bash
 chmod 600 ~/.ssh/github ~/.ssh/gitee
 ```
 
-### 6.2 Python EXTERNALLY-MANAGED限制
-**问题**：在Python 3.12+版本中遇到pip安装限制
-**解决方案**：脚本已自动处理，将EXTERNALLY-MANAGED文件重命名
+### Python EXTERNALLY-MANAGED 限制
 
-### 6.3 网络连接问题
-**问题**：git clone或curl下载失败
+**问题**：在 Python 3.12+ 版本中遇到 pip 安装限制
+
+**解决方案**：脚本已自动处理，将 EXTERNALLY-MANAGED 文件重命名
+
+### 网络连接问题
+
+**问题**：git clone 或 curl 下载失败
+
 **解决方案**：检查网络连接，或尝试使用国内镜像源
 
-### 6.4 权限不足问题
+### 权限不足问题
+
 **问题**：安装过程中遇到权限错误
-**解决方案**：确保当前用户具有sudo权限，并且在运行脚本时输入正确的sudo密码
 
-## 7. 脚本工作流程
+**解决方案**：确保当前用户具有 sudo 权限，并且在运行脚本时输入正确的 sudo 密码
 
-1. **参数解析**：读取命令行参数，设置安装选项
-2. **系统配置**：调用docker.sh脚本处理系统软件源和Docker安装
-3. **基础工具安装**：安装开发所需的基础软件包
-4. **Python环境配置**：处理Python 3.12+的EXTERNALLY-MANAGED限制
-5. **Pwn工具安装**：克隆并安装各种Pwn工具
-6. **GDB配置**：生成.gdbinit文件，配置调试环境
-7. **架构支持**：启用i386架构支持
+## 注意事项
 
-## 8. 注意事项
-
-1. 脚本会自动处理大部分依赖关系，但仍需确保系统已安装curl
-2. 安装过程中需要多次输入sudo密码，请确保当前用户具有sudo权限
-3. 建议在全新的Ubuntu系统上使用该脚本，以避免与现有配置冲突
+1. 脚本会自动处理大部分依赖关系，但仍需确保系统已安装 curl
+2. 安装过程中需要多次输入 sudo 密码，请确保当前用户具有 sudo 权限
+3. 建议在全新的 Ubuntu 系统上使用该脚本，以避免与现有配置冲突
 4. 脚本会在用户家目录下安装所有工具，不会影响系统全局配置
-5. 如果遇到网络问题，可以尝试使用`--skip-source`参数跳过系统换源
-6. 如果在做pwn时不是用root，请不要使用root用户运行此脚本，会导致所有工具安装在/root目录下，并且由于root权限太高，此脚本无法保证运行效果达到预期效果
+5. 如果遇到网络问题，可以尝试使用 `--skip-source` 参数跳过系统换源
+6. **重要**：如果在做 pwn 时不是用 root，请不要使用 root 用户运行此脚本，会导致所有工具安装在 /root 目录下，并且由于 root 权限太高，此脚本无法保证运行效果达到预期效果
 
-# 9. 后续维护
+## 后续维护
 
 - 定期更新脚本以获取最新的工具版本
 - 根据需要手动更新已安装的工具
 - 如果工具目录已存在，脚本会跳过安装该工具
 
-## 10. 联系方式
+## 相关项目
 
-如有问题或建议，欢迎提交Issue或Pull Request。
+本脚本在系统软件源配置部分参考了以下优秀项目：
 
----
+- **[SuperManito/LinuxMirrors](https://github.com/SuperManito/LinuxMirrors)** - 一个功能强大的 Linux 软件源切换工具，支持多种 Linux 发行版和国内镜像源
 
-**文档版本**：v1.0
-**更新日期**：2026-01-02
-**适用脚本版本**：v1.0
+## 联系方式
+
+如有问题或建议，欢迎提交 Issue 或 Pull Request。
